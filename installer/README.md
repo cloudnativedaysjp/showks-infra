@@ -2,8 +2,12 @@
 
 ## prepare
 
+### env
 `showks.env` に適切な値を書き込みます  
-その後 `make install` で適用します
+
+### tls cert
+
+`tls.crt` 及び `tls.key` を `cert/` に配置します
 
 ## apply
 
