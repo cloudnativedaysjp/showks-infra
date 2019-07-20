@@ -7,7 +7,7 @@
 
 ### tls cert
 
-`tls.crt` 及び `tls.key` を `cert/` に配置します
+`tls.crt` 及び `tls.key` `github.key` を `cert/` に配置します
 
 ## apply
 
