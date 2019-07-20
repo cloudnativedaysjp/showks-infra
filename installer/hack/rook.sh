@@ -1,6 +1,7 @@
 #!/bin/bash -e
 
 VERSION=${1:-1.0.4}
+
 REMOTE="https://raw.githubusercontent.com/rook/rook/v${VERSION}/cluster/examples/kubernetes"
 
 mkdir -p ./staging/rook
@@ -19,3 +20,19 @@ curl -f -s -L ${REMOTE}/ceph/storageclass.yaml | sed 's/namespace: rook-ceph/nam
 curl -f -s -L ${REMOTE}/minio/operator.yaml | sed 's/namespace: rook-minio-system/namespace: showks-system/' > ./staging/rook/05_operator.yaml
 curl -f -s -L ${REMOTE}/minio/object-store.yaml | sed 's/namespace: rook-minio/namespace: showks-system/' > ./staging/rook/06_object-store.yaml
 
+# Ingress
+mkdir -p ./staging/ingress/prod
+mkdir -p ./staging/ingress/stg
+mkdir -p ./staging/ingress/cmn
+
+sed -e "
+    /__DOMAIN__/ s/__DOMAIN__/${DOMAIN}/g
+" ./hack/manifests/rook/ingress.yaml > ./staging/ingress/prod/rook.yaml
+
+sed -e "
+    /__DOMAIN__/ s/__DOMAIN__/stg.${DOMAIN}/g
+" ./hack/manifests/rook/ingress.yaml > ./staging/ingress/stg/rook.yaml
+
+sed -e "
+    /__DOMAIN__/ s/__DOMAIN__/cmn.${DOMAIN}/g
+" ./hack/manifests/rook/ingress.yaml > ./staging/ingress/cmn/rook.yaml

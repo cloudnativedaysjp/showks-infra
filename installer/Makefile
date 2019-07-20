@@ -15,12 +15,15 @@ TEKTON_VERSION ?= 0.4.0
 WEAVE_VERSION ?= 1.11.3
 
 ## component
-CMN_COMPONENT = tekton keycloak concourse showks
-PRD_COMPONENT = weave rook prometheus istio
+CMN_COMPONENT = nginx-ingress-controller rook tekton keycloak concourse showks
+PRD_COMPONENT = nginx-ingress-controller rook weave prometheus istio
 
 ## kubectl context
 CMN_CONTEXT ?= common
 PRD_CONTEXT ?= production
+
+## domain
+DOMAIN ?= example.com
 
 default: usage
 
@@ -71,6 +74,8 @@ apply-cmn:
 	KUBECONFIG=$(KUBECONFIG) $(KUBECTL) apply --context $(CMN_CONTEXT) $(DRY_RUN) -f $(STAGING)/$${d}; \
 	echo "---"; \
 	done
+
+	@KUBECONFIG=$(KUBECONFIG) $(KUBECTL) apply --context $(CMN_CONTEXT) $(DRY_RUN) -f $(STAGING)/ingress/cmn
 	@echo "apply finished"
 
 apply-prd:
@@ -85,6 +90,8 @@ apply-prd:
 	KUBECONFIG=$(KUBECONFIG) $(KUBECTL) apply --context $(PRD_CONTEXT) $(DRY_RUN) -f $(STAGING)/$${d}; \
 	echo "---"; \
 	done
+	@KUBECONFIG=$(KUBECONFIG) $(KUBECTL) apply --context $(PRD_CONTEXT) $(DRY_RUN) -f $(STAGING)/ingress/prod
+
 	@echo "apply finished"
 
 .PHONY: delete
@@ -98,6 +105,7 @@ delete-cmn:
 	KUBECONFIG=$(KUBECONFIG) $(KUBECTL) delete --context $(CMN_CONTEXT) $(DRY_RUN) -f $(STAGING)/$${d}; \
         echo "---"; \
 	done
+	@KUBECONFIG=$(KUBECONFIG) $(KUBECTL) delete --context $(CMN_CONTEXT) $(DRY_RUN) -f $(STAGING)/ingress/cmn
 
 	@echo "delete finished"
 	$(call yellow,"WARNING: showks and showks-system namespaces are not deleted.")
@@ -107,9 +115,10 @@ delete-prd:
 
 	@for d in $(PRD_COMPONENT); do \
 	echo "---\ndelete $${d}\n---"; \
-	KUBECONFIG=$(KUBECONFIG) $(KUBECTL) delete --context $(CMN_CONTEXT) $(DRY_RUN) -f $(STAGING)/$${d}; \
+	KUBECONFIG=$(KUBECONFIG) $(KUBECTL) delete --context $(PRD_CONTEXT) $(DRY_RUN) -f $(STAGING)/$${d}; \
         echo "---"; \
 	done
+	@KUBECONFIG=$(KUBECONFIG) $(KUBECTL) delete --context $(PRD_CONTEXT) $(DRY_RUN) -f $(STAGING)/ingress/prod
 
 	@echo "delete finished"
 	$(call yellow,"WARNING: showks and showks-system namespaces are not deleted.")

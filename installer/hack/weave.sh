@@ -12,3 +12,15 @@ do
 /weave-scope-app.weave.svc.cluster.local./ s/weave-scope-app.weave.svc.cluster.local./weave-scope-app.showks-system.svc.cluster.local./g
 ' > ./staging/weave/${f}
 done
+
+# Ingress
+mkdir -p ./staging/ingress/prod
+mkdir -p ./staging/ingress/stg
+
+sed -e "
+    /__DOMAIN__/ s/__DOMAIN__/${DOMAIN}/g
+" ./hack/manifests/weave/ingress.yaml > ./staging/ingress/prod/weave.yaml
+
+sed -e "
+    /__DOMAIN__/ s/__DOMAIN__/stg.${DOMAIN}/g
+" ./hack/manifests/weave/ingress.yaml > ./staging/ingress/stg/weave.yaml
