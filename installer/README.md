@@ -7,7 +7,8 @@
 
 ### tls cert
 
-`tls.crt` `tls.key` `github.key` を `cert/` に配置します
+`<domain>.crt` `<domain>.key` 及び `github.key` を `cert/` に配置します  
+domain の crt と key は production/staging/common の 3 種類合計 6 つのファイルが配置される想定です
 
 ## apply
 
