@@ -15,7 +15,7 @@ TEKTON_VERSION ?= 0.4.0
 WEAVE_VERSION ?= 1.11.3
 
 ## component
-CMN_COMPONENT = nginx-ingress-controller rook tekton keycloak concourse showks
+CMN_COMPONENT = nginx-ingress-controller rook weave keycloak concourse showks
 PRD_COMPONENT = nginx-ingress-controller rook weave prometheus istio
 
 ## kubectl context
