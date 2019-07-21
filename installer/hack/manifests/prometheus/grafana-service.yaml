@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     app: grafana
-  name: grafana
+  name: grafana-prometheus
   namespace: showks-system
 spec:
   ports:
