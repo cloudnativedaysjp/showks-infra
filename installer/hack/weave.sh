@@ -16,11 +16,16 @@ done
 # Ingress
 mkdir -p ./staging/ingress/prod
 mkdir -p ./staging/ingress/stg
+mkdir -p ./staging/ingress/cmn
 
 sed -e "
-    /__DOMAIN__/ s/__DOMAIN__/${DOMAIN}/g
+    /__DOMAIN__/ s/__DOMAIN__/${CMN_DOMAIN}/g
+" ./hack/manifests/weave/ingress.yaml > ./staging/ingress/cmn/weave.yaml
+
+sed -e "
+    /__DOMAIN__/ s/__DOMAIN__/${PRD_DOMAIN}/g
 " ./hack/manifests/weave/ingress.yaml > ./staging/ingress/prod/weave.yaml
 
 sed -e "
-    /__DOMAIN__/ s/__DOMAIN__/stg.${DOMAIN}/g
+    /__DOMAIN__/ s/__DOMAIN__/${STG_DOMAIN}/g
 " ./hack/manifests/weave/ingress.yaml > ./staging/ingress/stg/weave.yaml

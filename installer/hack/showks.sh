@@ -59,5 +59,5 @@ done
 mkdir -p ./staging/ingress/cmn
 
 sed -e "
-    /__DOMAIN__/ s/__DOMAIN__/cmn.${DOMAIN}/g
+    /__DOMAIN__/ s/__DOMAIN__/${CMN_DOMAIN}/g
 " ./hack/manifests/showks/ingress.yaml > ./staging/ingress/cmn/showks.yaml
