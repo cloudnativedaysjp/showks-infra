@@ -20,4 +20,4 @@ spec:
   tls:
   - hosts:
     - weavescope.__DOMAIN__
-    secretName: showks-system/tls-certificate
+    secretName: tls-certificate

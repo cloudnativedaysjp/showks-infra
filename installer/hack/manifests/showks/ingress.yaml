@@ -19,4 +19,4 @@ spec:
   tls:
   - hosts:
     - form.__DOMAIN__
-    secretName: showks-system/tls-certificate
+    secretName: tls-certificate
